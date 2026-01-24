@@ -1,0 +1,7 @@
+{
+  "name": "GUARD.IA - Your AI Protection Agent",
+  "description": "AI-based personal protection agent that monitors calls in real-time to detect fraud (Pix, Bank Fraud) and intervene before you lose money.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}
