@@ -1,69 +1,55 @@
-
 import React from 'react';
 import { RiskLevel } from '../types';
 
 interface RiskMeterProps {
   score: number;
+  level: RiskLevel;
 }
 
-const RiskMeter: React.FC<RiskMeterProps> = ({ score }) => {
-  const getLevel = () => {
-    if (score >= 8) return RiskLevel.HIGH;
-    if (score >= 5) return RiskLevel.MEDIUM;
-    return RiskLevel.LOW;
-  };
-
-  const level = getLevel();
-
-  const getColor = () => {
-    switch (level) {
-      case RiskLevel.HIGH: return 'text-red-500 stroke-red-500';
-      case RiskLevel.MEDIUM: return 'text-yellow-500 stroke-yellow-500';
-      default: return 'text-green-500 stroke-green-500';
-    }
-  };
-
-  const getBgColor = () => {
-    switch (level) {
-      case RiskLevel.HIGH: return 'bg-red-500/10';
-      case RiskLevel.MEDIUM: return 'bg-yellow-500/10';
-      default: return 'bg-green-500/10';
-    }
-  };
-
-  const radius = 60;
+const RiskMeter: React.FC<RiskMeterProps> = ({ score, level }) => {
+  const color = level === RiskLevel.HIGH
+    ? 'text-red-400'
+    : level === RiskLevel.MEDIUM
+      ? 'text-amber-300'
+      : 'text-emerald-400';
+  const label = level === RiskLevel.HIGH ? 'High risk' : level === RiskLevel.MEDIUM ? 'Medium risk' : 'Low risk';
+  const radius = 52;
   const circumference = 2 * Math.PI * radius;
-  const offset = circumference - ((score * 10) / 100) * circumference;
+  const clamped = Math.min(10, Math.max(0, score));
+  const offset = circumference - (clamped / 10) * circumference;
+  const shown = clamped.toFixed(1);
 
   return (
-    <div className={`relative flex items-center justify-center p-8 rounded-full border border-slate-700 transition-colors duration-500 ${getBgColor()}`}>
-      <svg className="w-40 h-40 transform -rotate-90">
-        <circle
-          cx="80"
-          cy="80"
-          r={radius}
-          stroke="currentColor"
-          strokeWidth="8"
-          fill="transparent"
-          className="text-slate-800"
-        />
-        <circle
-          cx="80"
-          cy="80"
-          r={radius}
-          stroke="currentColor"
-          strokeWidth="8"
-          fill="transparent"
-          strokeDasharray={circumference}
-          strokeDashoffset={offset}
-          strokeLinecap="round"
-          className={`transition-all duration-1000 ease-out ${getColor()}`}
-        />
-      </svg>
-      <div className="absolute flex flex-col items-center">
-        <span className={`text-4xl font-bold mono ${getColor()}`}>{score.toFixed(1)}</span>
-        <span className="text-[10px] uppercase tracking-widest text-slate-400 font-semibold mt-[-4px]">Risk Score (1-10)</span>
+    <div className="flex flex-col items-center gap-3">
+      <div
+        role="meter"
+        aria-valuemin={1}
+        aria-valuemax={10}
+        aria-valuenow={Number(shown)}
+        aria-valuetext={`${shown} out of 10, ${label}`}
+        aria-label="Call risk"
+        className="relative h-36 w-36"
+      >
+        <svg className="h-36 w-36 -rotate-90" viewBox="0 0 120 120" aria-hidden="true">
+          <circle cx="60" cy="60" r={radius} fill="none" strokeWidth="8" className="stroke-slate-800" />
+          <circle
+            cx="60"
+            cy="60"
+            r={radius}
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="8"
+            strokeLinecap="round"
+            strokeDasharray={circumference}
+            strokeDashoffset={offset}
+            className={`transition-[stroke-dashoffset] duration-700 ease-out ${color}`}
+          />
+        </svg>
+        <div className="absolute inset-0 flex items-center justify-center">
+          <span className={`font-mono text-4xl font-semibold tabular-nums ${color}`}>{shown}</span>
+        </div>
       </div>
+      <p className={`text-sm font-semibold uppercase tracking-[0.16em] ${color}`}>{label}</p>
     </div>
   );
 };

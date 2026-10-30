@@ -1,4 +1,3 @@
-
 export enum RiskLevel {
   LOW = 'low',
   MEDIUM = 'medium',
@@ -7,8 +6,8 @@ export enum RiskLevel {
 
 export interface SentimentData {
   primary: string;
-  intensity: number; // 0-100
-  scoreAdjustment: number; // How much this sentiment added to the risk
+  intensity: number;
+  scoreAdjustment: number;
 }
 
 export interface Detection {
@@ -18,10 +17,10 @@ export interface Detection {
 }
 
 export interface RiskReport {
-  score: number; // Scale 1-10
+  score: number;
   level: RiskLevel;
   reason: string;
-  actions: string[]; // Steps for the user to take
+  actions: string[];
   detections: Detection[];
   sentiment?: SentimentData;
 }
@@ -29,6 +28,7 @@ export interface RiskReport {
 export interface TranscriptEntry {
   id: string;
   text: string;
-  sender: 'user' | 'scammer' | 'system';
+  sender: 'user' | 'caller' | 'system';
   timestamp: number;
+  highlights?: string[];
 }
