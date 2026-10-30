@@ -2,6 +2,7 @@ import path from 'path';
 import type { IncomingMessage, ServerResponse } from 'node:http';
 import { loadEnv, type Plugin } from 'vite';
 import react from '@vitejs/plugin-react';
+import tailwindcss from '@tailwindcss/vite';
 
 const SERVER_ENV = ['GEMINI_API_KEY', 'GEMINI_MODEL'];
 
@@ -102,7 +103,7 @@ export default function viteConfig({ mode }: { mode: string }) {
       port: 3000,
       host: '0.0.0.0',
     },
-    plugins: [react(), guardiaApiPlugin(mode)],
+    plugins: [tailwindcss(), react(), guardiaApiPlugin(mode)],
     resolve: {
       alias: {
         '@': path.resolve(__dirname, '.'),

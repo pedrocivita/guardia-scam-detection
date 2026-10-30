@@ -18,7 +18,7 @@ const CallPanel: React.FC<CallPanelProps> = ({ entries, phaseLabel, reducedMotio
   }, [entries, reducedMotion]);
 
   return (
-    <section className="relative flex min-h-[420px] flex-col overflow-hidden rounded-3xl border border-slate-800 bg-slate-950 shadow-2xl lg:h-[680px]" aria-labelledby="call-monitor-title">
+    <section className="relative flex min-h-[420px] flex-col overflow-hidden rounded-3xl border border-slate-800 bg-slate-950 shadow-2xl" aria-labelledby="call-monitor-title">
       <div className="scanline" aria-hidden="true"></div>
       <div className="flex items-center justify-between gap-3 border-b border-slate-800 px-4 py-4 sm:px-5">
         <div>
